@@ -78,8 +78,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 onPressed: () async {
-                  print(emailTextEditingController.text);
-                  print(passwordTextEditingController.text);
 
                  dynamic result = await signInWithEmailAndPassword(
                    emailTextEditingController.text, 
@@ -110,7 +108,8 @@ class _LoginPageState extends State<LoginPage> {
   // ----------- Sign In with email and Password ---------------
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      UserCredential userCredential = await FirebaseAuth.instance.
+      signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -121,9 +120,9 @@ class _LoginPageState extends State<LoginPage> {
 
   } on FirebaseAuthException catch (e) {
     if (e.code == 'user-not-found') {
-      print('No user found for that email.');
+      Fluttertoast.showToast(msg: 'User not found');
     } else if (e.code == 'wrong-password') {
-      print('Wrong password provided for that user.');
+      Fluttertoast.showToast(msg: 'Wrong password provided for that user.');
     }
   }
   }

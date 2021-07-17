@@ -19,6 +19,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
+        // backgroundColor: isInDanger ? Colors.red : Colors.green,
         appBar: AppBar(
           title: Text(
             'Bike Secure'
@@ -29,6 +30,7 @@ class _HomeState extends State<Home> {
         body: StreamBuilder<QuerySnapshot>(
           stream: _dataStream,
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+
             if (snapshot.hasError) {
               return Text('Something went wrong!');
             }
@@ -38,7 +40,7 @@ class _HomeState extends State<Home> {
             }
 
 
-            // get first doc data in the collection
+            // get first document data in the collection
             QueryDocumentSnapshot<Object?> docData = snapshot.data!.docs.first;
 
             // get docData into a map
@@ -48,30 +50,23 @@ class _HomeState extends State<Home> {
             isInDanger = bikeData['isInDanger'];
             // print('bool ' + isInDanger.toString());
 
-            return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Material(
-              elevation: 5,
-              child: Container(
-                // margin: EdgeInsets.all(8.0),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: isInDanger ? Colors.red : Colors.green,
-                  borderRadius: BorderRadius.circular(5.0)
-                ),
+            return Container(
+              color: isInDanger ? Colors.red : Colors.green,
+              child: Center(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
                         isInDanger ? 'Your Bike is in Danger' : 'Your Bike is Safe' ,
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 24.0,
+                          fontSize: 28.0,
                         ),
                       ),
+                      SizedBox(height: 28.0,),
                       Icon(
                         Icons.check_circle_outline_rounded,
                         color: Colors.white,
@@ -81,8 +76,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
-            ),
-          );
+            );
 
           } 
         ),

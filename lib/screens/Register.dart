@@ -1,3 +1,4 @@
+import 'package:bike_secure/home.dart';
 import 'package:bike_secure/main.dart';
 import 'package:bike_secure/screens/LoginScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -98,6 +99,7 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
                 onPressed: () async {
+
                   if (nameTextEditingController.text.length < 4) {
                     displayToastMessage(
                         "Name must be atleast 4 charactors!", context);
@@ -110,6 +112,9 @@ class _RegisterState extends State<Register> {
                         "Password must be atleast 8 charactors!", context);
                   } else {
                     registerNewUser(context);
+                    Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => Home())
+                    );
                   }
                 },
               ),
@@ -132,6 +137,7 @@ class _RegisterState extends State<Register> {
   }
 
   final FirebaseAuth auth = FirebaseAuth.instance;
+
   void registerNewUser(BuildContext context) async {
     final User? firebaseUser = (await FirebaseAuth.instance
             .createUserWithEmailAndPassword(
@@ -139,21 +145,7 @@ class _RegisterState extends State<Register> {
                 password: passwordTextEditingController.text)
             .catchError((err) {
       displayToastMessage("Error: " + err, context);
-    }))
-        .user;
-
-    if (firebaseUser != null) {
-      Map userDataMap = {
-        "name": nameTextEditingController.text,
-        "email": emailTextEditingController.text,
-        "number": mobileNumberTextEditingController.text,
-        "password": passwordTextEditingController.text
-      };
-      userRef.child(nameTextEditingController.text).set(userDataMap);
-      displayToastMessage("Successfully Added!", context);
-    } else {
-      displayToastMessage("Account not created!", context);
-    }
+    })).user;
   }
 
   displayToastMessage(String message, BuildContext context) {

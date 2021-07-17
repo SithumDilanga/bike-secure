@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
+// import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
@@ -12,7 +12,7 @@ void main() async {
   runApp(MyApp());
 }
 
-DatabaseReference userRef = FirebaseDatabase.instance.reference().child("users");
+// DatabaseReference userRef = FirebaseDatabase.instance.reference().child("users");
 
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
