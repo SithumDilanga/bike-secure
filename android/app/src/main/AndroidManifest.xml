@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.bike_secure">
+
+   <uses-permission android:name="android.permission.INTERNET"/>
+
    <application
         android:label="bike_secure"
         android:icon="@mipmap/ic_launcher">

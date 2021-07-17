@@ -1,6 +1,4 @@
 import 'dart:ui';
-
-import 'package:bike_secure/services/databse.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +12,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   bool isInDanger = false;
-  Database database = Database();
 
   final Stream<QuerySnapshot> _dataStream = FirebaseFirestore.instance.collection('bikeSecure').snapshots();
 
@@ -39,6 +36,7 @@ class _HomeState extends State<Home> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Text("Loading...");
             }
+
 
             // get first doc data in the collection
             QueryDocumentSnapshot<Object?> docData = snapshot.data!.docs.first;

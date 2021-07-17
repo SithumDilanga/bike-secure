@@ -1,4 +1,6 @@
 import 'package:bike_secure/screens/Register.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -10,11 +12,35 @@ void main() async {
   runApp(MyApp());
 }
 
-DatabaseReference userRef =
-    FirebaseDatabase.instance.reference().child("users");
+DatabaseReference userRef = FirebaseDatabase.instance.reference().child("users");
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  final FirebaseMessaging _messaging = FirebaseMessaging.instance;
+  final CollectionReference devTokenCollection = FirebaseFirestore.instance.collection('pushtokens');
+
+  // creating new document for a new device token and updating existing tokens
+  Future updateDeviceTokens(String devToken) async {
+    return await devTokenCollection.doc(devToken).set({
+      'devtoken': devToken,
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _messaging.getToken().then((token) {
+      updateDeviceTokens(token!);
+      print('Dev Token ' + token);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -70,23 +96,26 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             //Our MaterialButton which when pressed will take us to a new screen named as
             //LoginScreen
-            MaterialButton(
-              elevation: 0,
-              height: 50,
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => Register()));
-              },
-              color: Colors.redAccent,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text('Get Started',
-                      style: TextStyle(color: Colors.white, fontSize: 20)),
-                  Icon(Icons.arrow_forward_ios)
-                ],
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+              child: MaterialButton(
+                elevation: 0,
+                height: 50,
+                onPressed: () {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => Register()));
+                },
+                color: Colors.redAccent,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text('Get Started',
+                        style: TextStyle(color: Colors.white, fontSize: 20)),
+                    Icon(Icons.arrow_forward_ios)
+                  ],
+                ),
+                textColor: Colors.white,
               ),
-              textColor: Colors.white,
             )
           ],
         ),
