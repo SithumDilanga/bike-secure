@@ -82,24 +82,18 @@ class _RegisterState extends State<Register> {
               SizedBox(height: 50.0),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blue[800],
-                  elevation: 8.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(28.0)
-                  )
-                ),
+                    primary: Colors.blue[800],
+                    elevation: 8.0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(28.0))),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(28.0, 16.0, 28.0, 16.0),
                   child: Text(
                     'REGISTER',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0
-                    ),
+                    style: TextStyle(color: Colors.white, fontSize: 18.0),
                   ),
                 ),
                 onPressed: () async {
-
                   if (nameTextEditingController.text.length < 4) {
                     displayToastMessage(
                         "Name must be atleast 4 charactors!", context);
@@ -113,18 +107,18 @@ class _RegisterState extends State<Register> {
                   } else {
                     registerNewUser(context);
                     Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => Home())
-                    );
+                        context, MaterialPageRoute(builder: (_) => Home()));
                   }
                 },
               ),
-              SizedBox(height: 16.0,),
+              SizedBox(
+                height: 16.0,
+              ),
               Text('Already Registerd'),
               TextButton(
                 onPressed: () {
                   Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => LoginPage())
-                  );
+                      context, MaterialPageRoute(builder: (_) => LoginPage()));
                 },
                 child: const Text('Login Here',
                     style: TextStyle(color: Colors.white)),
@@ -139,13 +133,14 @@ class _RegisterState extends State<Register> {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   void registerNewUser(BuildContext context) async {
-    final User? firebaseUser = (await FirebaseAuth.instance
+    final User firebaseUser = (await FirebaseAuth.instance
             .createUserWithEmailAndPassword(
                 email: emailTextEditingController.text,
                 password: passwordTextEditingController.text)
             .catchError((err) {
       displayToastMessage("Error: " + err, context);
-    })).user;
+    }))
+        .user;
   }
 
   displayToastMessage(String message, BuildContext context) {
