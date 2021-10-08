@@ -20,8 +20,8 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Container(
+        body: SingleChildScrollView(
+      child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/back1.jpeg"),
@@ -127,7 +127,7 @@ class _RegisterState extends State<Register> {
           ),
         ),
       ),
-    );
+    ));
   }
 
   final FirebaseAuth auth = FirebaseAuth.instance;
