@@ -2,10 +2,15 @@
     package="com.example.bike_secure">
 
    <uses-permission android:name="android.permission.INTERNET"/>
+   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
    <application
         android:label="bike_secure"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyDwZt0BcmV6U_gS_Y44RVTKmdOkWR9vbiA"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

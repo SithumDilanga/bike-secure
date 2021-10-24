@@ -13,7 +13,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
 
@@ -61,20 +60,15 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 50.0),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blue[800],
-                  elevation: 8.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(28.0)
-                  )
-                ),
+                    primary: Colors.blue[800],
+                    elevation: 8.0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(28.0))),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(28.0, 16.0, 28.0, 16.0),
                   child: Text(
                     'LOG IN',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0
-                    ),
+                    style: TextStyle(color: Colors.white, fontSize: 18.0),
                   ),
                 ),
                 onPressed: () async {
@@ -95,8 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.push(
                       context, MaterialPageRoute(builder: (_) => Home(uid: result.uid.toString()))
                     );
-                 }
-
+                  } 
                 },
               ),
             ],
@@ -109,25 +102,21 @@ class _LoginPageState extends State<LoginPage> {
   // ----------- Sign In with email and Password ---------------
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.
-      signInWithEmailAndPassword(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      User? user = userCredential.user;
+      User user = userCredential.user;
 
       return user;
-
-  } on FirebaseAuthException catch (e) {
-    if (e.code == 'user-not-found') {
-      Fluttertoast.showToast(msg: 'User not found');
-    } else if (e.code == 'wrong-password') {
-      Fluttertoast.showToast(msg: 'Wrong password provided for that user.');
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        Fluttertoast.showToast(msg: 'User not found');
+      } else if (e.code == 'wrong-password') {
+        Fluttertoast.showToast(msg: 'Wrong password provided for that user.');
+      }
     }
   }
-  }
-
 }
-
-

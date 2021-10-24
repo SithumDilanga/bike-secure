@@ -31,8 +31,8 @@ class _RegisterState extends State<Register> {
     String bikeID = getRandomString(8);
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Container(
+        body: SingleChildScrollView(
+      child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/images/back1.jpeg"),
@@ -143,13 +143,14 @@ class _RegisterState extends State<Register> {
                   },
                 ),
               ),
-              SizedBox(height: 16.0,),
+              SizedBox(
+                height: 16.0,
+              ),
               Text('Already Registerd'),
               TextButton(
                 onPressed: () {
                   Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => LoginPage())
-                  );
+                      context, MaterialPageRoute(builder: (_) => LoginPage()));
                 },
                 child: const Text('Login Here',
                     style: TextStyle(color: Colors.white)),
@@ -158,7 +159,7 @@ class _RegisterState extends State<Register> {
           ),
         ),
       ),
-    );
+    ));
   }
 
   final FirebaseAuth auth = FirebaseAuth.instance;

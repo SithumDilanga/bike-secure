@@ -21,9 +21,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
-  final CollectionReference devTokenCollection = FirebaseFirestore.instance.collection('pushtokens');
+  final CollectionReference devTokenCollection =
+      FirebaseFirestore.instance.collection('pushtokens');
 
   // creating new document for a new device token and updating existing tokens
   Future updateDeviceTokens(String devToken) async {
@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _messaging.getToken().then((token) {
-      updateDeviceTokens(token!);
+      updateDeviceTokens(token);
       print('Dev Token ' + token);
     });
   }

@@ -1,6 +1,8 @@
 import 'dart:ui';
+import 'package:bike_secure/screens/map.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 class Home extends StatefulWidget {
 
@@ -13,10 +15,34 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  var locationMessage = "";
+  double latitude;
+  double longtitude;
 
-  bool isInDanger = false;
+  void getCurrentLocation() async {
+    var position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    var lastPosition = await Geolocator().getLastKnownPosition();
+    print(lastPosition);
 
-  // final Stream<QuerySnapshot> _dataStream = FirebaseFirestore.instance.collection('bikeSecure').snapshots();
+    var lat = position.latitude;
+    var long = position.longitude;
+    print("$lat,$long");
+    setState(() {
+      locationMessage = "$position";
+      latitude = lat;
+      longtitude = long;
+    });
+  }
+
+  @override
+  void initState() {
+    getCurrentLocation();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  bool isInDanger = false;  
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +72,9 @@ class _HomeState extends State<Home> {
               return Text("Loading...");
             }
 
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Text("Loading...");
+          }
 
             // get first document data in the collection
             // QueryDocumentSnapshot<Object?> docData = snapshot.data!.docs.first;
@@ -55,10 +84,9 @@ class _HomeState extends State<Home> {
             // get docData into a map
             Map<String, dynamic> bikeData = docData!.data() as Map<String, dynamic>;
 
-            // setting isInDanger value
-            isInDanger = bikeData['isInDanger'];
-            // print('bool ' + isInDanger.toString());
-
+          // setting isInDanger value
+          isInDanger = bikeData['isInDanger'];
+          // print('bool ' + isInDanger.toString());
             return Container(
               color: isInDanger ? Colors.red : Colors.green,
               child: Center(
@@ -99,11 +127,29 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
-            );
-
-          } 
-        ),
-      ),
+              SizedBox(
+                height: 20,
+              ),
+              FlatButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                map(lat: latitude, long: longtitude)));
+                    getCurrentLocation();
+                  },
+                  color: Colors.blue[800],
+                  child: Text(
+                    "Get current location",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  )),
+            ],
+          );
+        },
+      )),
     );
   }
 }
