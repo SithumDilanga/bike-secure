@@ -1,5 +1,5 @@
-class User {
-  late final String userid;
+class UID {
+  late final String uid;
 
-  User({required this.userid});
+  UID({required this.uid});
 }

@@ -91,8 +91,9 @@ class _LoginPageState extends State<LoginPage> {
                      toastLength: Toast.LENGTH_SHORT,
                    );
                  } else {
+                   print('login UID ' + result.uid.toString());
                     Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => Home())
+                      context, MaterialPageRoute(builder: (_) => Home(uid: result.uid.toString()))
                     );
                  }
 

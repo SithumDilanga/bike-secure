@@ -3,7 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
-  const Home({ Key? key }) : super(key: key);
+
+  final String uid;
+
+  const Home({ Key? key, required this.uid }) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -13,10 +16,14 @@ class _HomeState extends State<Home> {
 
   bool isInDanger = false;
 
-  final Stream<QuerySnapshot> _dataStream = FirebaseFirestore.instance.collection('bikeSecure').snapshots();
+  // final Stream<QuerySnapshot> _dataStream = FirebaseFirestore.instance.collection('bikeSecure').snapshots();
 
   @override
   Widget build(BuildContext context) {
+
+    final Stream<DocumentSnapshot> _dataStream = FirebaseFirestore.instance.collection("users").doc(widget.uid).snapshots();
+ 
+
     return Material(
       child: Scaffold(
         // backgroundColor: isInDanger ? Colors.red : Colors.green,
@@ -27,9 +34,9 @@ class _HomeState extends State<Home> {
           automaticallyImplyLeading: false,
           backgroundColor: Colors.blue[800],
         ),
-        body: StreamBuilder<QuerySnapshot>(
+        body: StreamBuilder<DocumentSnapshot>(
           stream: _dataStream,
-          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
             if (snapshot.hasError) {
               return Text('Something went wrong!');
@@ -41,10 +48,12 @@ class _HomeState extends State<Home> {
 
 
             // get first document data in the collection
-            QueryDocumentSnapshot<Object?> docData = snapshot.data!.docs.first;
+            // QueryDocumentSnapshot<Object?> docData = snapshot.data!.docs.first;
+
+            DocumentSnapshot<Object?>? docData = snapshot.data;
 
             // get docData into a map
-            Map<String, dynamic> bikeData = docData.data() as Map<String, dynamic>;
+            Map<String, dynamic> bikeData = docData!.data() as Map<String, dynamic>;
 
             // setting isInDanger value
             isInDanger = bikeData['isInDanger'];
@@ -55,23 +64,37 @@ class _HomeState extends State<Home> {
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        isInDanger ? 'Your Bike is in Danger' : 'Your Bike is Safe' ,
+                        'Your Bike ID - ${bikeData['bikeId']}',
                         style: TextStyle(
+                          fontSize: 16.0,
                           color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 28.0,
+                          fontWeight: FontWeight.bold
                         ),
                       ),
-                      SizedBox(height: 28.0,),
-                      Icon(
-                        Icons.check_circle_outline_rounded,
-                        color: Colors.white,
-                        size: 28.0,
-                      )
+                      SizedBox(height: 284.0,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            isInDanger ? 'Your Bike is in Danger' : 'Your Bike is Safe' ,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 28.0,
+                            ),
+                          ),
+                          SizedBox(height: 28.0,),
+                          Icon(
+                            Icons.check_circle_outline_rounded,
+                            color: Colors.white,
+                            size: 28.0,
+                          )
+                        ],
+                      ),
                     ],
                   ),
                 ),
