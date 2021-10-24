@@ -72,20 +72,24 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 onPressed: () async {
-                  dynamic result = await signInWithEmailAndPassword(
-                      emailTextEditingController.text,
-                      passwordTextEditingController.text);
 
-                  if (result == null) {
-                    // show an error message
-                    Fluttertoast.showToast(
-                      msg: 'Could not sign in!',
-                      toastLength: Toast.LENGTH_SHORT,
-                    );
-                  } else {
+                 dynamic result = await signInWithEmailAndPassword(
+                   emailTextEditingController.text, 
+                   passwordTextEditingController.text
+                  );
+
+                 if(result == null) {
+                   // show an error message
+                   Fluttertoast.showToast(
+                     msg: 'Could not sign in!',
+                     toastLength: Toast.LENGTH_SHORT,
+                   );
+                 } else {
+                   print('login UID ' + result.uid.toString());
                     Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => Home()));
-                  }
+                      context, MaterialPageRoute(builder: (_) => Home(uid: result.uid.toString()))
+                    );
+                  } 
                 },
               ),
             ],
