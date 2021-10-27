@@ -1,7 +1,7 @@
 import 'package:bike_secure/home.dart';
 import 'package:bike_secure/main.dart';
 import 'package:bike_secure/screens/LoginScreen.dart';
-import 'package:bike_secure/screens/qu_scan.dart';
+import 'package:bike_secure/screens/qr_scan.dart';
 import 'package:bike_secure/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,16 +20,16 @@ class _RegisterState extends State<Register> {
       TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
 
-  static const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-  Random _rnd = Random();
+  // static const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  // Random _rnd = Random();
 
-  String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
-    length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+  // String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+  //   length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
   @override
   Widget build(BuildContext context) {
 
-    String bikeID = getRandomString(8);
+    String bikeID = '';
 
     return Material(
       child: Scaffold(
@@ -95,13 +95,13 @@ class _RegisterState extends State<Register> {
                       style: TextStyle(fontSize: 16.0),
                     ),
                     SizedBox(height: 16.0,),
-                    Text(
-                      'your bike ID - $bikeID',
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold
-                      ),
-                    ),
+                    // Text(
+                    //   'your bike ID - $bikeID',
+                    //   style: TextStyle(
+                    //     fontSize: 16.0,
+                    //     fontWeight: FontWeight.bold
+                    //   ),
+                    // ),
                     SizedBox(height: 50.0),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(

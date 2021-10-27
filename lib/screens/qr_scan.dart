@@ -1,10 +1,16 @@
+import 'package:bike_secure/home.dart';
+import 'package:bike_secure/services/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Scanner extends StatefulWidget {
-  @override
+
+  String userId;
+  Scanner({ Key key, this.userId }) : super(key: key);
+
+    @override
   _ScannerState createState() => _ScannerState();
 }
  
@@ -12,6 +18,8 @@ class _ScannerState extends State<Scanner> {
 
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController controller;
+
+  DatabaseService _databaseService = DatabaseService();
  
   @override
   void dispose() {
@@ -41,6 +49,14 @@ class _ScannerState extends State<Scanner> {
         await launch(scanData.code);
         controller.resumeCamera();
       } else {
+
+        print('scan data ' + scanData.code.toString());
+        print('userId ' + widget.userId.toString());
+
+        DatabaseService(uid: widget.userId).updateUserWithQR(
+          bikeId: scanData.code
+        );
+
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -50,7 +66,7 @@ class _ScannerState extends State<Scanner> {
                 child: ListBody(
                   children: <Widget>[
                     Text('Barcode Type: ${describeEnum(scanData.format)}'),
-                    Text('Data: ${scanData.code}'),
+                    Text('ID: ${scanData.code}'),
                   ],
                 ),
               ),
@@ -58,7 +74,9 @@ class _ScannerState extends State<Scanner> {
                 TextButton(
                   child: Text('Ok'),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => Home(uid: widget.userId,))
+                    );
                   },
                 ),
               ],

@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:bike_secure/screens/map.dart';
-import 'package:bike_secure/screens/qu_scan.dart';
+import 'package:bike_secure/screens/qr_scan.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -96,21 +96,22 @@ class _HomeState extends State<Home> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      // Text(
-                      //   'Your Bike ID - ${bikeData['bikeId']}',
-                      //   style: TextStyle(
-                      //     fontSize: 16.0,
-                      //     color: Colors.white,
-                      //     fontWeight: FontWeight.bold
-                      //   ),
-                      // ),
+                      Text(
+                        'Your Bike ID - ${bikeData['bikeId']}',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      SizedBox(height: 16.0,),
                       ElevatedButton(
                         child: Text(
                           'Scan your bike QR'
                         ),
                         onPressed: () {
                           Navigator.push(
-                            context, MaterialPageRoute(builder: (_) => Scanner())
+                            context, MaterialPageRoute(builder: (_) => Scanner(userId: widget.uid,))
                           );
                         }, 
                       ),
