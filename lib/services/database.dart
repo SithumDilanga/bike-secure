@@ -3,15 +3,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class DatabaseService {
 
   // userid of the user
-  late final String uid;
+  final String uid;
 
-  DatabaseService({required this.uid});
+  DatabaseService({this.uid});
 
   // users collection reference
   final CollectionReference usersCollection = FirebaseFirestore.instance.collection('users');
 
   // creating new document for a new user and updating existing userdata
-  Future updateUserData({required String name, required String email, required String password, required String bikeId, required bool isInDanger}) async {
+  Future updateUserData({ String name,  String email,  String password,  String bikeId,  bool isInDanger}) async {
     return await usersCollection.doc(uid).set({
       'name': name,
       'email': email,

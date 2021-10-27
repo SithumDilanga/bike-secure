@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:bike_secure/screens/map.dart';
+import 'package:bike_secure/screens/qu_scan.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -8,7 +9,7 @@ class Home extends StatefulWidget {
 
   final String uid;
 
-  const Home({ Key? key, required this.uid }) : super(key: key);
+  const Home({ Key key, this.uid }) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -63,27 +64,27 @@ class _HomeState extends State<Home> {
         body: StreamBuilder<DocumentSnapshot>(
           stream: _dataStream,
           builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-
+      
             if (snapshot.hasError) {
               return Text('Something went wrong!');
             }
-
+      
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Text("Loading...");
             }
-
+      
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Text("Loading...");
           }
-
+      
             // get first document data in the collection
             // QueryDocumentSnapshot<Object?> docData = snapshot.data!.docs.first;
-
-            DocumentSnapshot<Object?>? docData = snapshot.data;
-
+      
+            DocumentSnapshot<Object> docData = snapshot.data;
+      
             // get docData into a map
-            Map<String, dynamic> bikeData = docData!.data() as Map<String, dynamic>;
-
+            Map<String, dynamic> bikeData = docData.data() as Map<String, dynamic>;
+      
           // setting isInDanger value
           isInDanger = bikeData['isInDanger'];
           // print('bool ' + isInDanger.toString());
@@ -95,13 +96,23 @@ class _HomeState extends State<Home> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                        'Your Bike ID - ${bikeData['bikeId']}',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold
+                      // Text(
+                      //   'Your Bike ID - ${bikeData['bikeId']}',
+                      //   style: TextStyle(
+                      //     fontSize: 16.0,
+                      //     color: Colors.white,
+                      //     fontWeight: FontWeight.bold
+                      //   ),
+                      // ),
+                      ElevatedButton(
+                        child: Text(
+                          'Scan your bike QR'
                         ),
+                        onPressed: () {
+                          Navigator.push(
+                            context, MaterialPageRoute(builder: (_) => Scanner())
+                          );
+                        }, 
                       ),
                       SizedBox(height: 284.0,),
                       Row(
@@ -120,33 +131,33 @@ class _HomeState extends State<Home> {
                             Icons.check_circle_outline_rounded,
                             color: Colors.white,
                             size: 28.0,
-                          )
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
                         ],
                       ),
+                      FlatButton(
+                             onPressed: () {
+                               Navigator.push(
+                                   context,
+                                   MaterialPageRoute(
+                                       builder: (context) =>
+                                           map(lat: latitude, long: longtitude)));
+                               getCurrentLocation();
+                             },
+                             color: Colors.blue[800],
+                             child: Text(
+                               "Get current location",
+                               style: TextStyle(
+                                 color: Colors.white,
+                               ),
+                             )
+                          ),
                     ],
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              FlatButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                map(lat: latitude, long: longtitude)));
-                    getCurrentLocation();
-                  },
-                  color: Colors.blue[800],
-                  child: Text(
-                    "Get current location",
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  )),
-            ],
+              ),              
           );
         },
       )),

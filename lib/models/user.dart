@@ -1,5 +1,5 @@
 class UID {
-  late final String uid;
+  final String uid;
 
-  UID({required this.uid});
+  UID({this.uid});
 }
